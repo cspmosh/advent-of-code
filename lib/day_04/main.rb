@@ -8,7 +8,7 @@ File.foreach("data/d4_section_assignments.txt", chomp: true) do |schedules|
   shift_1 = Shift.new(shift_range_1)
   shift_2 = Shift.new(shift_range_2)
 
-  fully_contained_shifts += 1 if shift_1.covered_by?(shift_2) || shift_2.covered_by?(shift_1)
+  fully_contained_shifts += 1 if shift_1.contained_by?(shift_2) || shift_2.contained_by?(shift_1)
   overlapping_shifts += 1 if shift_1.overlaps_with?(shift_2)
 end
 
