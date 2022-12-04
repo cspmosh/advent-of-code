@@ -9,7 +9,7 @@ class Shift
     (first_day..last_day)
   end
 
-  def covered_by?(other_shift)
+  def contained_by?(other_shift)
     other_shift.range.cover?(first_day) && other_shift.range.cover?(last_day) #503
   end
 
