@@ -1,0 +1,9 @@
+D,L,V,T,M,H,F
+H,Q,G,J,C,T,N,P
+R,S,D,M,P,H
+L,B,V,F
+N,H,G,L,Q
+W,B,D,G,R,M,P
+G,M,N,R,C,H,L,Q
+C,L,W
+R,D,L,Q,J,Z,M,T
