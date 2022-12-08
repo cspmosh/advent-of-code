@@ -5,7 +5,7 @@ total_priorities = 0
 total_priority_of_unique_items = 0
 elf_group = []
 
-File.foreach("data/d3_rucksack_contents.txt", chomp: true) do |items|
+DirFile.foreach("data/d3_rucksack_contents.txt", chomp: true) do |items|
   rucksack = RuckSack.new(items: items)
   total_priorities += Prioritizer.call(rucksack.find_dup)
 
