@@ -3,7 +3,7 @@ require_relative 'elf_finder'
 elf = Elf.new
 elfs = []
 
-DirFile.foreach("data/d1_elf_snacks.txt", chomp: true) do |calories|
+File.foreach("data/d1_elf_snacks.txt", chomp: true) do |calories|
   if calories.empty?
     elfs << elf
     elf = Elf.new

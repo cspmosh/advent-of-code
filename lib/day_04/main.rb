@@ -3,7 +3,7 @@ require_relative 'shift'
 fully_contained_shifts = 0
 overlapping_shifts = 0
 
-DirFile.foreach("data/d4_section_assignments.txt", chomp: true) do |schedules|
+File.foreach("data/d4_section_assignments.txt", chomp: true) do |schedules|
   shift_range_1, shift_range_2 = schedules.split(",")
   shift_1 = Shift.new(shift_range_1)
   shift_2 = Shift.new(shift_range_2)

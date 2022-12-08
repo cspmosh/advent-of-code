@@ -4,12 +4,12 @@ require_relative 'crate_mover_9001'
 crates = []
 secret_message = ""
 
-DirFile.foreach("data/d5_crate_stacks.txt", chomp: true) do |line|
+File.foreach("data/d5_crate_stacks.txt", chomp: true) do |line|
   stack = line.split(",")
   crates << stack
 end
 
-DirFile.foreach("data/d5_crate_moving_instructions.txt", chomp: true) do |line|
+File.foreach("data/d5_crate_moving_instructions.txt", chomp: true) do |line|
   instructions = line.split(" ")
   quantity = instructions[1].to_i
   from_stack = instructions[3].to_i - 1
