@@ -6,7 +6,7 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
 gem "rspec"
 gem "pry"
-gem "debase"
-gem "ruby-debug-ide"
+# gem "debase"
+# gem "ruby-debug-ide"
 
 # gem "rails"
