@@ -31,10 +31,8 @@ PLATFORMS
   x86_64-darwin-21
 
 DEPENDENCIES
-  debase
   pry
   rspec
-  ruby-debug-ide
 
 BUNDLED WITH
-   2.2.16
+   2.4.1
