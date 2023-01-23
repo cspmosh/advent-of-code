@@ -1,41 +1,32 @@
 require 'day_21/job'
 
-describe Job do
-  let(:input) {}
-  let(:job) { described_class.new(input) }
-
-  describe "type" do
-    context "when the input is a number" do
-      let(:input) { "3" }
-
-      it "returns :number" do
-        expect(job.type).to eq(:number)
+describe ExpressionJob do
+  describe "print" do
+    context "when the operands are numbers" do
+      it "outputs the value of the operation" do
+        job = described_class.new("+", 3, 4)
+        expect(job.print).to eq("(3 + 4)")
       end
     end
 
-    context "when the input is an operation" do
-      let(:input) { "a + b" }
+    context "when the both operands are monkeys" do
+      it "outputs the value of the operation" do
+        monkey_abc = described_class.new("+", 1, 1)
+        monkey_def = described_class.new("-", 5, 1)
 
-      it "returns :operation" do
-        expect(job.type).to eq(:operation)
-      end
-    end
-  end
+        job = described_class.new("+", monkey_abc, monkey_def)
 
-  describe "operands" do
-    context "when the input is a number" do
-      let(:input) { "4" }
-
-      it "returns an array with the number" do
-        expect(job.operands).to eq(["4"])
+        expect(job.print).to eq("((1 + 1) + (5 - 1))")
       end
     end
 
-    context "when the input is an operation" do
-      let(:input) { "a + b" }
+    context "when the one operand is a monkey" do
+      it "outputs the value of the operation" do
+        monkey_abc = described_class.new("+", 1, 1)
 
-      it "returns an array with operands" do
-        expect(job.operands).to eq(["a", "b"])
+        job = described_class.new("+", monkey_abc, 3)
+
+        expect(job.print).to eq("((1 + 1) + 3)")
       end
     end
   end

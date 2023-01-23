@@ -1,51 +1,76 @@
 require_relative 'job'
 
 class MonkeyRiddle
-  def initialize(monkeys: [])
-    @number_jobs, @operation_jobs = monkeys.partition {|m| m[:job].type == :number }
+  attr_reader :monkeys, :expression
 
-    create_instance_variables
-    create_getters
+  def initialize(monkeys: [])
+    @monkeys = monkeys
+    @expression = build_expression
   end
 
   def solve
-    until operation_jobs.empty?
-
-      op_job = operation_jobs.shift
-
-      if op_job[:job].operands.all? {|operand| self.respond_to?(operand)}
-        input = op_job[:job].input
-
-        op_job[:job].operands.each do |operand|
-          input = input.gsub(operand, self.send(operand))
-        end
-
-        number_jobs << { monkey: op_job[:monkey], job: Job.new(eval(input).to_s) }
-        create_instance_variables
-        create_getters
-
-        next
-      end
-
-      operation_jobs << op_job
-    end
-
-    root.to_i
+    eval(expression.print)
   end
 
-  private
+  def solve_for_x
+    left_expression = expression.left_operand
+    right_expression = expression.right_operand
 
-  def create_instance_variables
-    @number_jobs.each do |nj|
-      instance_variable_set("@#{nj[:monkey]}", nj[:job].input)
+    linear_expression, equality_constant = left_expression.print.include?("X") ? [left_expression, eval(right_expression.print)] : [right_expression, eval(left_expression.print)]
+
+    puts "linear expression: #{linear_expression.print}, equality value: #{equality_constant}"
+
+    until (linear_expression.value == "X")
+      left_expression = linear_expression.left_operand
+      right_expression = linear_expression.right_operand
+      operator = linear_expression.operator
+
+      linear_expression, constant = left_expression.print.include?("X") ? [left_expression, find_constant(left_expression, operator, right_expression)] : [right_expression, find_constant(left_expression, operator, right_expression)]
+      equality_constant = equality_constant.send(invert_operator(operator), constant)
+
+      puts "linear expression: #{linear_expression.print}, constant: #{constant}; equality_constant: #{equality_constant}"
+    end
+
+    equality_constant
+  end
+
+private
+
+  def find_constant(left, operator, right)
+    left_expression = left.print
+    right_expression = right.print
+
+    if right_expression.include?("X")
+      constant = eval(left_expression)
+      constant **= -1 if operator == "/"
+    else
+      constant = eval(right_expression)
+    end
+
+    constant
+  end
+
+  def invert_operator(operator)
+    case operator
+    when "-"
+      "+"
+    when "+"
+      "-"
+    when "*"
+      "/"
+    when "/"
+      "*"
     end
   end
 
-  def create_getters
-    instance_variables.each do |v|
-      define_singleton_method(v.to_s.tr('@','')) do
-        instance_variable_get(v)
-      end
+  def build_expression(monkey: "root")
+    args = monkeys[monkey].split
+
+    if args.size == 1
+      return VariableJob.new(args[0]) if args[0] == "X"
+      return ConstantJob.new(args[0].to_i)
     end
+
+    ExpressionJob.new(args[1], build_expression(monkey: args[0]), build_expression(monkey: args[2]))
   end
 end
